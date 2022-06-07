@@ -10,8 +10,9 @@ router.get('/test-me', function (req, res) {
     res.send('My first ever api!')
 });
 
-router.get('/test-me1', function (req, res) {
-    res.send('My second ever api!')
+router.get('/Hello', function (req, res) {
+
+    res.send('Hello there!')
 });
 
 router.get('/test-me2', function (req, res) {
@@ -26,5 +27,22 @@ router.get('/test-me4', function (req, res) {
     res.send('My last api!')
 });
 
+router.get('/condidates',function(req, res){
+    console.log('Query paramters for this request are'+JSON.stringify(req.query))
+    let gender = req.query.gender
+    let state = req.query.state
+    let distric =req.query.distric
+    console.log('State is' +state)
+    console.log('Gender is '+ gender)
+    console.log('Distric is '+distric)
+    let condidates = ["pradip", "aditi"]
+    res.send(condidates)
+})
+
+router.get('/candidates/:candidatesName', function(req,res){
+    console.log('The request objects is '+JSON.stringify(req.params))
+    console.log('condidates name is '+req.params.candidatesName)
+      res.send('Done')
+})
 module.exports = router;
 // adding this comment for no reason
