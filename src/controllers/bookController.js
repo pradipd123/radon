@@ -1,4 +1,5 @@
 const { count } = require("console")
+const { create } = require("../models/bookModel")
 const BookModel= require("../models/bookModel")
 
 const createBook= async function (req, res) {
@@ -65,21 +66,49 @@ const getBooksData= async function (req, res) {
     
     // ASYNC AWAIT
     
-    let a= 2+4
-    a= a + 10
-    console.log(a)
-    let allBooks= await BookModel.find( )  //normally this is an asynchronous call..but await makes it synchronous
-
+   
+    let allBooks= await BookModel.find({authorName: "AP"} )  //normally this is an asynchronous call..but await makes it synchronous
+    console.log(allBooks)
+    if ( allBooks.length > 0) res.send({msg: allBooks, condition: true})
+    else res.send({msg: "No books found", condition: false})
+}
 
     // WHEN AWAIT IS USED: - database + axios
     //  AWAIT can not be used inside forEach , map and many of the array functions..BE CAREFUL
-    console.log(allBooks)
-    let b = 14
-    b= b+ 10
-    console.log(b)
-    res.send({msg: allBooks})
-}
+
+    const updateBooks= async function (req, res) {
+        let data = req.body //{sales "1200"}
+        let allBooks= await BookModel.findOneAndUpdate(
+            {authorName: "ABC"}, //condition
+            {$set: data}, // update in date
+            { new: true, upsert:true}// new : true -will give you back the updated document // upsert: if finds and updates
+           // the  document but if the doc is not found(i.e docs not exist)then it creates a new document i.e update or insert
+            
+         )  
+         
+       // console.log(allBooks)
+       // if ( allBooks.length > 0) res.send({msg: allBooks, condition: true})
+       // else res.send({msg: "No books found", condition: false})
+        }
+       
+       const deleteBooks= async function (req, res) {
+       // let data = req.body //{sales "1200"}
+        let allBooks= await BookModel.updateMany(
+            {authorName: "PA"}, //condition
+            {$set:{isDeleted: true} }, // update in date
+            { new: true },  
+        )    
+        
+        res.send({msg: allBooks})
+       }
+//CRUD OPERATION
+//CREATE
+//READ
+//UPDATE
+//DALETE
 
 
 module.exports.createBook= createBook
 module.exports.getBooksData= getBooksData
+module.exports.updateBooks= updateBooks
+module.exports.deleteBooks= deleteBooks
