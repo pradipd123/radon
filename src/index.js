@@ -14,6 +14,12 @@ mongoose.connect("mongodb+srv://Functionup-radon-pradip:si19LZAXAODDsiJu@cluster
 .then( () => console.log("MongoDb is connected"))
 .catch ( err => console.log(err) )
 
+app.use(function (req,res ,next) {
+    console.log("inside GLOBAL MW");
+    next(); 
+}
+);
+
 app.use('/', route);
 
 
